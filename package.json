@@ -1,0 +1,12 @@
+{
+  "name": "unipose",
+  "description": "Minimal tool to standardize compose.yaml files",
+  "license": "GPL-3.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/lib.test.js"
+  },
+  "dependencies": {
+    "js-yaml": "4.1.0"
+  }
+}

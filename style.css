@@ -1,0 +1,279 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #abb2bf;
+  --text-muted: #8b949e;
+  --btn-bg: #21262d;
+  --btn-hover: #30363d;
+  --radius: 6px;
+  --header-h: 56px;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-size: 0.8rem;
+  --line-height: 1.6;
+  --pad: 0.75rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+header {
+  height: var(--header-h);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.header-left h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.header-left p {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-top: 0.1rem;
+}
+
+/* ── Star button ── */
+.star-btn {
+  display: inline-flex;
+  align-items: stretch;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: border-color 0.15s;
+  line-height: 1;
+}
+
+.star-btn:hover {
+  border-color: #8b949e;
+}
+
+/* Left part: GitHub icon + star icon + "Star" text */
+.star-btn-icon,
+.star-btn-star {
+  flex-shrink: 0;
+}
+
+.star-btn-icon {
+  width: 14px;
+  height: 14px;
+  fill: var(--text-muted);
+  align-self: center;
+  margin-left: 8px;
+}
+
+.star-btn-star {
+  width: 12px;
+  height: 12px;
+  fill: #e3b341;
+  align-self: center;
+  margin: 0 5px 0 6px;
+}
+
+.star-btn-divider {
+  display: inline-block;
+  width: 1px;
+  align-self: stretch;
+  background: var(--border);
+  margin: 0 0 0 8px;
+  flex-shrink: 0;
+}
+
+.star-btn-count {
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--btn-bg);
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.star-btn:hover .star-btn-count {
+  background: var(--btn-hover);
+}
+
+/* ── Main layout ── */
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Panel ── */
+.panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  min-height: 0;
+}
+
+/* Panel header – fixed height so both panels are identical */
+.panel-header {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+/* ── Copy button ── */
+#copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #238636;
+  color: #fff;
+  border: 1px solid #2ea043;
+  border-radius: var(--radius);
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#copy-btn svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+#copy-btn:hover {
+  background: #2ea043;
+  border-color: #3fb950;
+}
+
+#copy-btn.copied {
+  background: #1f6feb;
+  border-color: #388bfd;
+}
+
+/* ── Overlay editor (left panel) ── */
+.editor-wrap {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+}
+
+.editor-wrap pre {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.editor-wrap pre code {
+  display: block;
+  padding: var(--pad);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  background: transparent;
+  white-space: pre;
+  color: transparent;
+}
+
+textarea#input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text);
+  border: none;
+  outline: none;
+  resize: none;
+  padding: var(--pad);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  tab-size: 2;
+  overflow: hidden;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+textarea#input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Output panel (right) ── */
+.panel > pre {
+  flex: 1;
+  overflow: auto;
+  margin: 0;
+}
+
+.panel > pre code#output {
+  display: block;
+  padding: var(--pad);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  background: var(--surface);
+  min-height: 100%;
+  white-space: pre;
+}
+
+code#output.error {
+  color: #e06c75;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  body { overflow: auto; }
+  main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50vh 50vh;
+    height: auto;
+  }
+}
