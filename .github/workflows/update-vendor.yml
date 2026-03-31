@@ -1,0 +1,43 @@
+name: Update Vendor Files
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  update-vendor:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if js-yaml version changed
+        id: check-version
+        run: |
+          VERSION=$(grep '"js-yaml"' package.json | grep -oP '\d+\.\d+\.\d+')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Found js-yaml version: $VERSION"
+
+      - name: Download and update js-yaml vendor file
+        run: |
+          VERSION=${{ steps.check-version.outputs.version }}
+          curl -s https://cdn.jsdelivr.net/npm/js-yaml@${VERSION}/dist/js-yaml.min.js -o vendor/js-yaml.min.js
+          echo "Updated vendor/js-yaml.min.js to version $VERSION"
+
+      - name: Commit changes if vendor file changed
+        run: |
+          if git diff --quiet vendor/js-yaml.min.js; then
+            echo "No changes to vendor file"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add vendor/js-yaml.min.js
+            git commit -m "Update js-yaml vendor file to ${{ steps.check-version.outputs.version }}"
+            git push
+          fi
